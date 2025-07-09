@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Book;
+use App\Models\Review;
 
 class ReviewController extends Controller
 {
@@ -52,16 +53,38 @@ class ReviewController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        //
+    public function update(Request $request, Review $review)
+{
+    if ($review->user_id !== auth()->id()) {
+        return response()->json(['message' => 'Unauthorized'], 403);
     }
+
+    $request->validate([
+        'rating' => 'required|integer|min:1|max:5',
+        'comment' => 'nullable|string',
+    ]);
+
+    $review->update([
+        'rating' => $request->rating,
+        'comment' => $request->comment,
+    ]);
+
+    return response()->json(['message' => 'Review updated successfully', 'review' => $review]);
+}
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Review $review)
     {
-        //
+        if ($review->user_id !== auth()->id()) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+
+        $review->delete();
+
+        return response()->json(['message' => 'Review deleted successfully']);
     }
+
+    
 }
