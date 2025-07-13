@@ -17,4 +17,24 @@ class Review extends Model
     {
         return $this->belongsTo(Book::class);
     }
+    public function votes()
+    {
+        return $this->hasMany(Vote::class);
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    //to count votes
+    public function upvotes()
+    {
+        return $this->votes()->where('vote_type', 'up');
+    }
+
+    public function downvotes()
+    {
+        return $this->votes()->where('vote_type', 'down');
+    }
 }

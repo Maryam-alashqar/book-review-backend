@@ -8,8 +8,8 @@
    - `users` (already exists)
    - `books`
    - `reviews`
-   - `comments` (optional)
-   - `likes` or `votes` (optional)
+   - `comments` 
+   - `likes` or `votes`
 
 ---
 
@@ -17,7 +17,7 @@
 - Create Models:
   - `Book`
   - `Review`
-  - `Comment` (optional)
+  - `Comment` 
   - `User`
 - Relationships:
   - User has many Reviews & Comments
@@ -35,8 +35,8 @@
 - `POST /books/{id}/reviews`
 - `PUT /reviews/{id}`
 - `DELETE /reviews/{id}`
-- `POST /reviews/{id}/comments` *(optional)*
-- `POST /reviews/{id}/like` *(optional)*
+- `POST /reviews/{id}/comments` 
+- `POST /reviews/{id}/like`
 
 ---
 
@@ -49,8 +49,8 @@
   - `store()`
   - `update()`
   - `destroy()`
-- `CommentController` (optional)
-- `LikeController` (optional)
+- `CommentController` 
+- `LikeController` 
 
 ---
 

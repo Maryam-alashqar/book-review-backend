@@ -11,12 +11,18 @@ class ReviewController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Book $book)
+    public function index($bookId)
     {
-        $reviews = $book->reviews()
-        ->with('user:id,name') // لعرض اسم المستخدم فقط
-        ->latest()
+        $book = Book::findOrFail($bookId);
+
+        $reviews = Review::with([
+            'user:id,name',
+            'upvotes',
+            'downvotes',
+            'comments.user:id,name'])
+        ->withCount(['upvotes', 'downvotes'])
         ->get();
+
 
         return response()->json([
             'book' => $book->title,
@@ -86,5 +92,5 @@ class ReviewController extends Controller
         return response()->json(['message' => 'Review deleted successfully']);
     }
 
-    
+
 }
