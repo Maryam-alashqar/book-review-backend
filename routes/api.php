@@ -13,7 +13,7 @@ require base_path('routes/auth.php');
 
 Route::get('/books', [BookController::class, 'index']);
 Route::get('/books/{book}/reviews', [ReviewController::class, 'index']);
-Route::get('/reviews/{id}/comments', [CommentController::class, 'index']);
+Route::get('/reviews/{reviewId}/comments', [CommentController::class, 'index']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/books', [BookController::class, 'store']);
@@ -21,6 +21,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::put('/reviews/{review}', [ReviewController::class, 'update']);
     Route::delete('/reviews/{review}', [ReviewController::class, 'destroy']);
     Route::post('/reviews/{id}/vote', [VoteController::class, 'vote']);
-    Route::post('/reviews/{id}/comments', [CommentController::class, 'store']);
-    Route::delete('/comments/{id}', [CommentController::class, 'destroy']);
+    Route::post('/reviews/{reviewId}/comments', [CommentController::class, 'store']);
+    Route::delete('/comments/{comment}', [CommentController::class, 'destroy']);
 });

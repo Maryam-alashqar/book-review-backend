@@ -8,7 +8,7 @@ use App\Models\Vote;
 
 class VoteController extends Controller
 {
-    
+
     public function vote(Request $request, $id)
 {
     $request->validate([
@@ -27,7 +27,9 @@ class VoteController extends Controller
         ]
     );
 
-    return response()->json(['message' => 'Vote recorded', 'vote' => $vote], 200);
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Vote recorded', 'data' => $vote], 200);
 }
 
 }

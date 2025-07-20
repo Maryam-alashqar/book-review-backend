@@ -45,7 +45,10 @@ class ReviewController extends Controller
             'rating' => $request->rating,
             'comment' => $request->comment,
         ]);
-        return response()->json(['review' => $review], 201);
+        return response()->json([
+            'status' => 'success',
+            'meeage' => 'Your review is published',
+            'data' => $review], 201);
     }
 
     /**
@@ -62,7 +65,9 @@ class ReviewController extends Controller
     public function update(Request $request, Review $review)
 {
     if ($review->user_id !== auth()->id()) {
-        return response()->json(['message' => 'Unauthorized'], 403);
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Unauthorized'], 403);
     }
 
     $request->validate([
@@ -75,7 +80,9 @@ class ReviewController extends Controller
         'comment' => $request->comment,
     ]);
 
-    return response()->json(['message' => 'Review updated successfully', 'review' => $review]);
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Review updated successfully', 'review' => $review]);
 }
 
     /**
@@ -84,12 +91,16 @@ class ReviewController extends Controller
     public function destroy(Review $review)
     {
         if ($review->user_id !== auth()->id()) {
-            return response()->json(['message' => 'Unauthorized'], 403);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Unauthorized'], 403);
         }
 
         $review->delete();
 
-        return response()->json(['message' => 'Review deleted successfully']);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Review deleted successfully']);
     }
 
 

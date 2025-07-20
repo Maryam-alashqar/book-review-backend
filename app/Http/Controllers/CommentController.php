@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Comment;
+use App\Models\Review;
 
 class CommentController extends Controller
 {
@@ -18,7 +20,10 @@ public function store(Request $request, $reviewId)
         'text' => $request->text,
     ]);
 
-    return response()->json($comment, 201);
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Comment added successfully.',
+        'data' => $comment, 201]);
 }
 
 // عرض التعليقات
@@ -29,21 +34,23 @@ public function index($reviewId)
                 ->latest()
                 ->get();
 
-    return response()->json($comments);
+    return response()->json([
+                'status' => 'success',
+                'data' => $comment]);
 }
 
 // حذف تعليق
-public function destroy($id)
+public function destroy(Comment $comment)
 {
-    $comment = Comment::findOrFail($id);
-
-    if ($comment->user_id !== auth()->id()) {
+    if (auth()->id() !== $comment->user_id) {
         return response()->json(['message' => 'Unauthorized'], 403);
     }
 
     $comment->delete();
 
-    return response()->json(['message' => 'Comment deleted']);
+    return response()->json([
+                        'status' => 'success',
+                        'message' => 'Comment deleted successfully']);
 }
 
 }

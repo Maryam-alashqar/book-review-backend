@@ -14,7 +14,7 @@ class BookController extends Controller
     {
         $books = Book::latest()->get();
 
-        return response()->json(['books' => $books]);
+        return response()->json(['data' => $books]);
     }
 
     /**
@@ -41,7 +41,10 @@ class BookController extends Controller
         'created_by' => auth()->id(),
     ]);
 
-    return response()->json(['book' => $book], 201);
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Book added successfully',
+        'data' => $book], 201);
 }
 
     /**
