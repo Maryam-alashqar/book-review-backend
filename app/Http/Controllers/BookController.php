@@ -58,10 +58,32 @@ class BookController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        //
+    public function update(Request $request, Book $book)
+{
+    if (auth()->user()->role !== 'admin' && $book->created_by !== auth()->id()) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Unauthorized.'
+        ], 403);
     }
+
+    $request->validate([
+        'title' => 'required|string',
+        'author' => 'required|string',
+        'category' => 'nullable|string',
+        'description' => 'nullable|string',
+    ]);
+
+    $book->update($request->only(['title', 'author', 'category', 'description']));
+
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Book updated successfully.',
+        'data' => $book
+    ]);
+}
+
+
 
     /**
      * Remove the specified resource from storage.

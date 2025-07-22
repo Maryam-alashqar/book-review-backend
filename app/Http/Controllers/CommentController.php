@@ -36,8 +36,34 @@ public function index($reviewId)
 
     return response()->json([
                 'status' => 'success',
-                'data' => $comment]);
+                'data' => $comments]);
 }
+
+
+public function update(Request $request, Review $review, Comment $comment)
+{
+    if ($comment->user_id !== auth()->id()) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Unauthorized.'
+        ], 403);
+    }
+
+    $request->validate([
+        'text' => 'required|string'
+    ]);
+
+    $comment->update([
+        'text' => $request->text
+    ]);
+
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Comment updated successfully.',
+        'data' => $comment
+    ]);
+}
+
 
 // حذف تعليق
 public function destroy(Comment $comment)
