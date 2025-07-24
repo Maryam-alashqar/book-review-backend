@@ -14,7 +14,9 @@ class BookController extends Controller
     {
         $books = Book::latest()->get();
 
-        return response()->json(['data' => $books]);
+        return response()->json([
+                'status' => 'success',
+                'data' => $books]);
     }
 
     /**
@@ -50,10 +52,30 @@ class BookController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        //
+   public function search(Request $request)
+{
+    $query = Book::query();
+
+    if ($request->has('title')) {
+        $query->where('title', 'like', '%' . $request->title . '%');
     }
+
+    if ($request->has('author')) {
+        $query->where('author', 'like', '%' . $request->author . '%');
+    }
+
+    if ($request->has('category')) {
+        $query->where('category', 'like', '%' . $request->category . '%');
+    }
+
+    $books = $query->with('reviews')->latest()->get();
+
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Books search results.',
+        'data' => $books
+    ]);
+}
 
     /**
      * Update the specified resource in storage.
