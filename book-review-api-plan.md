@@ -75,6 +75,3 @@
 ---
 
 ## Phase 8: Frontend Integration
-- Build UI to interact with API
-- Include error handling and loading states
-- Display success/fail responses for actions
